@@ -29,7 +29,7 @@ uploaded_file = st.file_uploader("Elige una imagen...", type=["jpg", "jpeg", "pn
 if uploaded_file is not None:
     # Mostrar imagen original
     image = Image.open(uploaded_file)
-    st.image(image, caption='Imagen subida', use_container_width=True)
+    st.image(image, caption='Imagen subida', use_column_width=True)
     
     if st.button('Detectar Empanadas'):
         with st.spinner('Detectando...'):
@@ -45,7 +45,7 @@ if uploaded_file is not None:
                 res_image = Image.fromarray(res_plotted[..., ::-1])
                 
                 st.success("¡Detección completada!")
-                st.image(res_image, caption='Resultado de la detección', use_container_width=True)
+                st.image(res_image, caption='Resultado de la detección', use_column_width=True)
                 
                 # Mostrar conteo si es útil
                 boxes = results[0].boxes
