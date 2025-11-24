@@ -9,7 +9,9 @@ st.title("🥟 Detector de Empanadas con YOLOv11")
 st.write("Sube una imagen para detectar empanadas usando tu modelo entrenado.")
 
 # Ruta del modelo
-MODEL_PATH = "best.pt"
+# Usamos la ruta absoluta relativa a este script para evitar problemas de CWD
+current_dir = os.path.dirname(os.path.abspath(__file__))
+MODEL_PATH = os.path.join(current_dir, "best.pt")
 
 # Verificar si el modelo existe
 if not os.path.exists(MODEL_PATH):
