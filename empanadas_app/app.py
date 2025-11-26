@@ -8,22 +8,40 @@ st.set_page_config(page_title="Detector de Empanadas", page_icon="🥟")
 st.title("🥟 Detector de Empanadas con YOLOv11")
 st.write("Sube una imagen para detectar empanadas usando tu modelo entrenado.")
 
-# Ruta del modelo
-# Usamos la ruta absoluta relativa a este script para evitar problemas de CWD
+# Configuración de modelos
 current_dir = os.path.dirname(os.path.abspath(__file__))
-MODEL_PATH = os.path.join(current_dir, "best.pt")
+MODELS_DIR = os.path.join(current_dir, "modelos")
+
+# Diccionario de modelos disponibles
+model_options = {
+    "Modelo v1": "best_mauri_v1.pt",
+    "Modelo v2": "best_dovi_v2.pt"
+}
+
+# Selección de modelo
+st.subheader("1. Configuración del Modelo")
+selected_model_name = st.selectbox(
+    "Selecciona la versión del modelo a utilizar:",
+    list(model_options.keys())
+)
+
+MODEL_PATH = os.path.join(MODELS_DIR, model_options[selected_model_name])
 
 # Verificar si el modelo existe
 if not os.path.exists(MODEL_PATH):
-    st.error(f"No se encontró el archivo del modelo '{MODEL_PATH}'. Por favor, coloca el archivo 'best.pt' en la misma carpeta que este script.")
+    st.error(f"No se encontró el archivo del modelo en '{MODEL_PATH}'.")
     st.stop()
 
-# Cargar el modelo
+# Cargar el modelo seleccionado
 try:
     model = YOLO(MODEL_PATH)
+    st.success(f"Modelo '{selected_model_name}' cargado exitosamente.")
 except Exception as e:
     st.error(f"Error al cargar el modelo: {e}")
     st.stop()
+
+st.divider()
+st.subheader("2. Detección")
 
 # Subir imagen
 uploaded_file = st.file_uploader("Elige una imagen...", type=["jpg", "jpeg", "png"])
