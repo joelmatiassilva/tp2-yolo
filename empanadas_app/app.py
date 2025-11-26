@@ -32,9 +32,14 @@ if not os.path.exists(MODEL_PATH):
     st.error(f"No se encontró el archivo del modelo en '{MODEL_PATH}'.")
     st.stop()
 
+# Función para cargar el modelo (cacheada)
+@st.cache_resource
+def load_model(path):
+    return YOLO(path)
+
 # Cargar el modelo seleccionado
 try:
-    model = YOLO(MODEL_PATH)
+    model = load_model(MODEL_PATH)
     st.success(f"Modelo '{selected_model_name}' cargado exitosamente.")
 except Exception as e:
     st.error(f"Error al cargar el modelo: {e}")
